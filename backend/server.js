@@ -8,8 +8,7 @@ const app = express()
 connectDB()
 
 app.use(cors())
-
-app.use(express.json({ extended:false }))
+app.use(express.json())
 
 app.get('/', (req, res) => {
     res.send('Api rodando...')
@@ -17,6 +16,6 @@ app.get('/', (req, res) => {
 
 app.use('/api/contatos', contatosRoutes)
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 9091
 
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`))
