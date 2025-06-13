@@ -1,5 +1,5 @@
 import express from 'express'
-import Contato from '../models/Contato'
+import Contato from '../models/Contato.js'
 import mongoose, { Mongoose } from 'mongoose'
 
 const router = express.Router()
@@ -42,28 +42,6 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/:id', async (req, res) => {
-    try {
-        const { id } = req.params
-
-        const buscaDeContato = await Contato.findById(id).lean()
-
-        if (!buscaDeContato) {
-            return res.status(404).json({ msg: 'Contato não encontrado! verifique o ID e tente novamente.'})
-        }
-
-        res.status(200).json(buscaDeContato)
-    } catch (err) {
-        console.error(err.message)
-
-        if (err.kind === 'ObjectId') {
-            return res.status(400).json({ msg: 'ID do contato inválido! verifique e tente novamente.'})
-        }
-
-        res.status(500).send('Erro ao encontrar o contato, tente novamente!')
-    }
-})
-
 router.get('/buscar', async (req, res) => {
     try {
         const query = {}
@@ -85,6 +63,28 @@ router.get('/buscar', async (req, res) => {
     } catch (err) {
         console.error(err.message)
         res.status(500).send('Erro ao encontrar os contatos.')
+    }
+})
+
+router.get('/:id', async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const buscaDeContato = await Contato.findById(id).lean()
+
+        if (!buscaDeContato) {
+            return res.status(404).json({ msg: 'Contato não encontrado! verifique o ID e tente novamente.'})
+        }
+
+        res.status(200).json(buscaDeContato)
+    } catch (err) {
+        console.error(err.message)
+
+        if (err.kind === 'ObjectId') {
+            return res.status(400).json({ msg: 'ID do contato inválido! verifique e tente novamente.'})
+        }
+
+        res.status(500).send('Erro ao encontrar o contato, tente novamente!')
     }
 })
 
