@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios'
+import ContatoLista from "./components/ContatoLista";
+import ContatoForm from "./components/ContatoForm";
 
 function App() {
   const [contatos, setContatos] = useState([])
-  const [loading, setLoanding] = useState(true)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useEffect(() => {
@@ -14,16 +16,37 @@ function App() {
 
         setContatos(resposta.data.contatos)
 
-        setLoanding(false)
+        setLoading(false)
       } catch (err) {
         console.error('Erro ao buscar contatos:', err)
         setError('Não foi possível buscar os contatos, tente novamente!')
-        setLoanding(false)
+        setLoading(false)
       }
     }
 
     buscaDeContatos()
   }, [])
+
+  const handleContatoAdicionado = (novoContato) => {
+    setContatos(prevContatos => [...prevContatos, novoContato])
+  }
+
+  const handleContatoDeletar = async (id) => {
+    const confirm = window.confirm('Tem certeza que deseja excluir este contato?')
+
+    if (!confirm) {
+      return
+    }
+
+    try {
+      await axios.delete(`http://localhost:9091/api/contatos/${id}`)
+
+      setContatos(prevContatos => prevContatos.filter(contato => contato._id !== id))
+    } catch (err) {
+      console.error('Erro ao excluir contato!:', err.response ? err.response.data : err.message)
+      alert('Erro ao excluir contato. Tente novamente mais tarde.')
+    }
+  }
 
   if (loading) {
     return (
@@ -46,19 +69,10 @@ function App() {
   return (
     <div>
       <h1>Lista de Contatos</h1>
-      <h4>({contatos.length}) contatos encontrados!</h4>
+      <ContatoForm aoContatoAdicionar={handleContatoAdicionado}/>
 
-      {contatos.length === 0 ? (
-        <p>Nenhum contato cadastrado! que tal cadastrar algum?</p>
-      ) : (
-        <ul>
-          {contatos.map(contato => (
-            <li key={contato._id}>
-              {contato.nome} - {contato.email} - {contato.telefone}
-            </li>
-          ))}
-        </ul>
-      )}
+      <h4>({contatos.length}) contatos encontrados!</h4>
+      <ContatoLista contatos={contatos} onContatoDeletar={handleContatoDeletar}/>
     </div>
   );
 }

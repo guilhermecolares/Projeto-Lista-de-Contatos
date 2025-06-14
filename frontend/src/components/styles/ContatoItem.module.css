@@ -1,0 +1,41 @@
+.itemDaLista {
+  width: 35%;
+  min-width: 30%;
+  margin-bottom: 8px;
+  margin-right: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f9f9f9;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.05);
+  flex-wrap: wrap;
+}
+
+.btnExcluir {
+  margin-left: 15px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  margin-left: auto;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btnExcluir:hover {
+  background-color: #c82333;
+  transform: translateY(-1px);
+}
+
+.textoContato {
+  flex-grow: 1;
+  font-size: 1.1em;
+  color: #333;
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
