@@ -7,6 +7,7 @@ function App() {
   const [contatos, setContatos] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [contatoParaEditar, setContatoParaEditar] = useState(null)
 
   useEffect(() => {
     const buscaDeContatos = async() => {
@@ -27,8 +28,17 @@ function App() {
     buscaDeContatos()
   }, [])
 
-  const handleContatoAdicionado = (novoContato) => {
-    setContatos(prevContatos => [...prevContatos, novoContato])
+  const handleContatoAdicionadoOuAtualizado = (contatoAtualizadoOuNovo) => {
+    const index = contatos.findIndex(c => c._id === contatoAtualizadoOuNovo._id)
+
+    if (index !== -1) {
+      const novaLista = [...contatos]
+      novaLista[index] = contatoAtualizadoOuNovo
+      setContatos(novaLista)
+    } else {
+      setContatos(prevContatos => [...prevContatos, contatoAtualizadoOuNovo])
+    }
+    setContatoParaEditar(null)
   }
 
   const handleContatoDeletar = async (id) => {
@@ -46,6 +56,10 @@ function App() {
       console.error('Erro ao excluir contato!:', err.response ? err.response.data : err.message)
       alert('Erro ao excluir contato. Tente novamente mais tarde.')
     }
+  }
+
+  const handleContatoEditar = (contato) => {
+    setContatoParaEditar(contato)
   }
 
   if (loading) {
@@ -69,10 +83,17 @@ function App() {
   return (
     <div>
       <h1>Lista de Contatos</h1>
-      <ContatoForm aoContatoAdicionar={handleContatoAdicionado}/>
+      <ContatoForm 
+      aoContatoAdicionarOuAtualizar={handleContatoAdicionadoOuAtualizado}
+      contatoAtual={contatoParaEditar}
+      />
 
       <h4>({contatos.length}) contatos encontrados!</h4>
-      <ContatoLista contatos={contatos} onContatoDeletar={handleContatoDeletar}/>
+      <ContatoLista 
+      contatos={contatos} 
+      onContatoDeletar={handleContatoDeletar}
+      onContatoEditar={handleContatoEditar}
+      />
     </div>
   );
 }

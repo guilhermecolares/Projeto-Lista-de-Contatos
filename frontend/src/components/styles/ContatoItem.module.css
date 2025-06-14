@@ -32,10 +32,33 @@
   transform: translateY(-1px);
 }
 
+.btnEditar {
+  margin-right: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btnEditar:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
 .textoContato {
   flex-grow: 1;
   font-size: 1.1em;
   color: #333;
   margin-right: 10px;
   margin-bottom: 5px;
+}
+
+.itemDaLista > div {
+  display: flex;
+  gap: 5px;
+  flex-shrink: 0;
 }

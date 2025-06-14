@@ -1,6 +1,6 @@
 import ContatoItem from "./ContatoItem";
 
-function ContatoLista({ contatos, onContatoDeletar }) {
+function ContatoLista({ contatos, onContatoDeletar, onContatoEditar }) {
     if (contatos.length === 0) {
         return <p>Nenhum contato cadastrado! Que tal cadastrar algum?</p>
     }
@@ -12,6 +12,7 @@ function ContatoLista({ contatos, onContatoDeletar }) {
                 key={contato._id} 
                 contato={contato}
                 onDelete={onContatoDeletar}
+                onEdit={onContatoEditar}
                 />
             ))}
         </ul>

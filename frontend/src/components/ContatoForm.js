@@ -1,43 +1,60 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import CampoDeInput from './CampoDeInput'
 import ButtonEnviar from './ButtonEnviar'
 
-function ContatoForm({ aoContatoAdicionar }) {
+function ContatoForm({ contatoAtual ,aoContatoAdicionarOuAtualizar }) {
     
     const [nome, setNome] = useState('')
     const [email, setEmail] = useState('')
     const [telefone, setTelefone] = useState('')
     const [mensagem, setMensagem] = useState('')
 
+    useEffect(() => {
+        if(contatoAtual) {
+            setNome(contatoAtual.nome)
+            setEmail(contatoAtual.email)
+            setTelefone(contatoAtual.telefone)
+            setMensagem('')
+        } else {
+            setNome('');
+            setEmail('');
+            setTelefone('');
+            setMensagem('');
+        }
+    }, [contatoAtual])
+
+
+
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        setMensagem('Adicionando contato...')
+        setMensagem(contatoAtual ? 'Atualizando contato...' : 'Adicionando contato...')
 
         try {
-            const novoContato = {nome, email, telefone}
-            const resposta = await axios.post('http://localhost:9091/api/contatos', novoContato)
+            const dadosDoContato = {nome, email, telefone}
+            let resposta
 
-            setMensagem('Contato adicionado com sucesso!')
+            if(contatoAtual) {
+                resposta = await axios.put(`http://localhost:9091/api/contatos/${contatoAtual._id}`, dadosDoContato)
+                setMensagem('Contato atualizado com sucesso!')
+            } else {
+                resposta = await axios.post(`http://localhost:9091/api/contatos`, dadosDoContato)
+            }
 
-            setNome('')
-            setEmail('')
-            setTelefone('')
-
-            if (aoContatoAdicionar) {
-                aoContatoAdicionar(resposta.data)
+            if (aoContatoAdicionarOuAtualizar) {
+                aoContatoAdicionarOuAtualizar(resposta.data)
             }
         } catch (err) {
         console.error(`Erro ao adicionar contato! ${err.response ? err.response.data : err.message}`)
-        setMensagem(err.response && err.response.data && err.response.data.msg ? `Erro: ${err.response.data.msg}` : 'Erro ao adicionar contato! verifique os dados e tente novamente.')
+        setMensagem(err.response && err.response.data && err.response.data.msg ? `Erro: ${err.response.data.msg}` : `Erro ao ${contatoAtual} ? 'atualizar!' : 'adicionar!' verifique os dados e tente novamente.`)
         }
     }
 
 
     return (
         <div>
-            <h1>Adicionar Novo Contato</h1>
+            <h2>{contatoAtual ? 'Editar Contato' : 'Adicionar Novo Contato'}</h2>
             <form onSubmit={handleSubmit}>
                 <CampoDeInput
                 label='Nome'
@@ -50,7 +67,7 @@ function ContatoForm({ aoContatoAdicionar }) {
 
                 <CampoDeInput
                 label='Email'
-                type='text'
+                type='email'
                 id='email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -68,7 +85,7 @@ function ContatoForm({ aoContatoAdicionar }) {
 
                 <ButtonEnviar
                 type='submit'
-                text='Adicionar Contato'
+                text={contatoAtual ? 'Atualizar Contato' : 'Adicionar Contato'}
                 />
             </form>
             {mensagem && <p>{mensagem}</p>}
