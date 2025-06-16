@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import CampoDeInput from './CampoDeInput'
-import ButtonEnviar from './ButtonEnviar'
+import ButtonEnviar from './elements/ButtonEnviar'
 
 function ContatoForm({ contatoAtual ,aoContatoAdicionarOuAtualizar }) {
     
@@ -9,6 +9,8 @@ function ContatoForm({ contatoAtual ,aoContatoAdicionarOuAtualizar }) {
     const [email, setEmail] = useState('')
     const [telefone, setTelefone] = useState('')
     const [mensagem, setMensagem] = useState('')
+
+    console.log("Valor atual da mensagem:", mensagem);
 
     useEffect(() => {
         if(contatoAtual) {
@@ -40,15 +42,29 @@ function ContatoForm({ contatoAtual ,aoContatoAdicionarOuAtualizar }) {
                 setMensagem('Contato atualizado com sucesso!')
             } else {
                 resposta = await axios.post(`http://localhost:9091/api/contatos`, dadosDoContato)
+                setMensagem('Contato adicionado com sucesso!')
             }
 
             if (aoContatoAdicionarOuAtualizar) {
                 aoContatoAdicionarOuAtualizar(resposta.data)
             }
+
+            setTimeout(() => {
+                setMensagem('')
+            }, 3000)
         } catch (err) {
-        console.error(`Erro ao adicionar contato! ${err.response ? err.response.data : err.message}`)
-        setMensagem(err.response && err.response.data && err.response.data.msg ? `Erro: ${err.response.data.msg}` : `Erro ao ${contatoAtual} ? 'atualizar!' : 'adicionar!' verifique os dados e tente novamente.`)
+        console.error(`Erro ao adicionar contato!`, err.response ? err.response.data : err.message)
+        const tipoOperacao = contatoAtual ? 'atualizar' : 'adicionar'
+        const mensagemErroBackend = err.response && err.response.data && err.response.data.msg
+        if (mensagemErroBackend) {
+            setMensagem(`Erro: ${mensagemErroBackend}`);
+        } else {
+            setMensagem(`Erro ao ${tipoOperacao} contato! Verifique os dados e tente novamente.`)
         }
+        setTimeout(() => {
+            setMensagem('')
+        }, 3000)
+    }
     }
 
 
@@ -88,7 +104,7 @@ function ContatoForm({ contatoAtual ,aoContatoAdicionarOuAtualizar }) {
                 text={contatoAtual ? 'Atualizar Contato' : 'Adicionar Contato'}
                 />
             </form>
-            {mensagem && <p>{mensagem}</p>}
+            {mensagem && <p className={`message ${mensagem.includes('sucesso') ? 'success' : 'error'}`}>{mensagem}</p>}
         </div>
     )
 }
