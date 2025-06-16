@@ -1,18 +1,29 @@
 import styles from './styles/ContatoItem.module.css'
 
 function ContatoItem({ contato, onDelete, onEdit }) {
-    return (
-        <li className={styles.itemDaLista}>
-            <span className={styles.textoContato}>
-                {contato.nome} - {contato.email} - {contato.telefone}
-            </span>
 
+    console.log("URL da foto de perfil:", contato.fotoPerfil);
+    return (
+        <li className={styles.contactItem}>
             <div>
-                <button className={styles.btnEditar} onClick={() => onEdit(contato)}>
+                <img 
+                src={contato.fotoPerfil}
+                alt={`Foto de pefil de ${contato.nome}`}
+                className={styles.profilePicture}
+                />
+
+                <p className={styles.contactName}>{contato.nome}</p>
+            </div>
+                
+                <p>{contato.email}</p>
+                <p>{contato.telefone}</p>
+
+            <div className={styles.contactButtons}>
+                <button className={styles.editButton} onClick={() => onEdit(contato)}>
                     Editar
                 </button>
 
-                <button className={styles.btnExcluir} onClick={() => onDelete(contato._id)}>
+                <button className={styles.deleteButton} onClick={() => onDelete(contato._id)}>
                     Excluir
                 </button>
             </div>

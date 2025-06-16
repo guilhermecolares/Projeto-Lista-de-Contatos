@@ -1,64 +1,83 @@
-.itemDaLista {
-  width: 35%;
-  min-width: 30%;
-  margin-bottom: 8px;
-  margin-right: 20px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+.contactItem {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #f9f9f9;
-  box-shadow: 1px 1px 3px rgba(0,0,0,0.05);
-  flex-wrap: wrap;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-.btnExcluir {
-  margin-left: 15px;
-  background-color: #dc3545;
-  color: white;
+.contactItem:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.contactItem p {
+  margin: 5px 0;
+  color: #555;
+  font-size: 0.95em;
+}
+
+.contactName {
+  font-weight: bold;
+  color: #2c3e50;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  text-transform: capitalize;
+}
+
+.contactButtons {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.contactButtons button {
+  padding: 8px 18px;
   border: none;
-  padding: 8px 15px;
-  margin-left: auto;
   border-radius: 5px;
   cursor: pointer;
   font-size: 0.9em;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.btnExcluir:hover {
-  background-color: #c82333;
-  transform: translateY(-1px);
-}
-
-.btnEditar {
-  margin-right: 10px;
-  background-color: #007bff;
+.editButton {
+  background-color: #3498db;
   color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.9em;
-  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-.btnEditar:hover {
-  background-color: #0056b3;
+.editButton:hover {
+  background-color: #217dbb;
   transform: translateY(-1px);
 }
 
-.textoContato {
-  flex-grow: 1;
-  font-size: 1.1em;
-  color: #333;
-  margin-right: 10px;
-  margin-bottom: 5px;
+.deleteButton {
+  background-color: #e74c3c;
+  color: white;
 }
 
-.itemDaLista > div {
-  display: flex;
-  gap: 5px;
-  flex-shrink: 0;
+.deleteButton:hover {
+  background-color: #c0392b;
+  transform: translateY(-1px);
+}
+
+.profilePicture {
+    width: 80px; /* Tamanho da imagem */
+    height: 80px; /* Altura da imagem */
+    border-radius: 50%; /* Deixa a imagem redonda */
+    object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
+    margin-right: 15px; /* Espaçamento à direita da imagem */
+    border: 2px solid #ddd; /* Borda suave */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra leve */
+}
+
+.contactHeader { /* Uma nova classe para alinhar a foto com o nome */
+    display: flex;
+    align-items: center; /* Alinha a foto e o texto verticalmente */
+    margin-bottom: 10px;
 }

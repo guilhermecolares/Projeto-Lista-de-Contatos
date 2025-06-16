@@ -1,6 +1,6 @@
-function ButtonEnviar({ type, text}) {
+function ButtonEnviar({ type, text, className}) {
     return (
-        <button type={type}>{text}</button>
+        <button className={className} type={type}>{text}</button>
     )
 }
 

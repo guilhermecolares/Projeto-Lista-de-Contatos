@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 import CampoDeInput from './CampoDeInput'
 import ButtonEnviar from './elements/ButtonEnviar'
+import styles from './styles/ContatoForm.module.css'
 
 function ContatoForm({ contatoAtual ,aoContatoAdicionarOuAtualizar }) {
     
@@ -10,7 +11,7 @@ function ContatoForm({ contatoAtual ,aoContatoAdicionarOuAtualizar }) {
     const [telefone, setTelefone] = useState('')
     const [mensagem, setMensagem] = useState('')
 
-    console.log("Valor atual da mensagem:", mensagem);
+    const nameInputRef = useRef(null)
 
     useEffect(() => {
         if(contatoAtual) {
@@ -23,6 +24,10 @@ function ContatoForm({ contatoAtual ,aoContatoAdicionarOuAtualizar }) {
             setEmail('');
             setTelefone('');
             setMensagem('');
+        }
+
+        if (nameInputRef.current) {
+            nameInputRef.current.focus();
         }
     }, [contatoAtual])
 
@@ -71,8 +76,10 @@ function ContatoForm({ contatoAtual ,aoContatoAdicionarOuAtualizar }) {
     return (
         <div>
             <h2>{contatoAtual ? 'Editar Contato' : 'Adicionar Novo Contato'}</h2>
-            <form onSubmit={handleSubmit}>
+            <form className={styles.formContainer} onSubmit={handleSubmit}>
                 <CampoDeInput
+                ref={nameInputRef}
+                className={styles.formInput}
                 label='Nome'
                 type='text'
                 id='nome'
@@ -82,6 +89,7 @@ function ContatoForm({ contatoAtual ,aoContatoAdicionarOuAtualizar }) {
                 />
 
                 <CampoDeInput
+                className={styles.formInput}
                 label='Email'
                 type='email'
                 id='email'
@@ -91,6 +99,7 @@ function ContatoForm({ contatoAtual ,aoContatoAdicionarOuAtualizar }) {
                 />
 
                 <CampoDeInput
+                className={styles.formInput}
                 label='Telefone'
                 type='text'
                 id='telefone'
@@ -100,6 +109,7 @@ function ContatoForm({ contatoAtual ,aoContatoAdicionarOuAtualizar }) {
                 />
 
                 <ButtonEnviar
+                className={styles.buttonEnviar}
                 type='submit'
                 text={contatoAtual ? 'Atualizar Contato' : 'Adicionar Contato'}
                 />
