@@ -1,6 +1,5 @@
 # Projeto-Lista-de-Contatos
-PROJETO CRUD
-CRUD de contatos com React e Node.js.
+PROJETO CRUD de contatos com React e Node.js.
 
 **Front-end:**
 -   **HTML5**
